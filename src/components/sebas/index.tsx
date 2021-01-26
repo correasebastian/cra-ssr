@@ -1,3 +1,3 @@
-const Sebas = ()=> (<h1>sebashola</h1>)
+const Sebas = ()=> (<h1>sebas</h1>)
 
 export default Sebas
