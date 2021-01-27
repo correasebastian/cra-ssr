@@ -178,7 +178,7 @@ module.exports = function (webpackEnv) {
   ].filter(Boolean)
 
   const config = {
-    mode: isProdOrServer ? 'production' : isEnvDevelopment && 'development',
+    mode: isEnvProduction ? 'production' : isEnvDevelopment ? 'development' : isEnvServer && 'none',
     // Stop compilation early in production
     bail: isProdOrServer,
     devtool: isProdOrServer
