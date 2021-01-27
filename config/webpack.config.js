@@ -1,4 +1,4 @@
-'use strict';
+
 
 const fs = require('fs');
 const path = require('path');
@@ -78,12 +78,16 @@ const hasJsxRuntime = (() => {
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
 module.exports = function (webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development';
-  const isEnvProduction = webpackEnv === 'production';
+  const isEnvProduction = webpackEnv === 'production' ;
+  const isEnvServer = webpackEnv === 'server';
+
+  const isProdOrServer = isEnvProduction || isEnvServer
+  const iDevOrServer = isEnvDevelopment || isEnvServer
 
   // Variable used for enabling profiling in Production
   // passed into alias object. Uses a flag if passed into the build command
   const isEnvProductionProfile =
-    isEnvProduction && process.argv.includes('--profile');
+    (isProdOrServer) && process.argv.includes('--profile');
 
   // We will provide `paths.publicUrlOrPath` to our app
   // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
@@ -97,7 +101,7 @@ module.exports = function (webpackEnv) {
   const getStyleLoaders = (cssOptions, preProcessor) => {
     const loaders = [
       isEnvDevelopment && require.resolve('style-loader'),
-      isEnvProduction && {
+      (isProdOrServer ) && {
         loader: MiniCssExtractPlugin.loader,
         // css is located in `static/css`, use '../../' to locate index.html folder
         // in production `paths.publicUrlOrPath` can be a relative path
@@ -131,7 +135,7 @@ module.exports = function (webpackEnv) {
             // which in turn let's users customize the target behavior as per their needs.
             postcssNormalize(),
           ],
-          sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+          sourceMap: isProdOrServer ? shouldUseSourceMap : isEnvDevelopment,
         },
       },
     ].filter(Boolean);
@@ -140,7 +144,7 @@ module.exports = function (webpackEnv) {
         {
           loader: require.resolve('resolve-url-loader'),
           options: {
-            sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+            sourceMap: isProdOrServer ? shouldUseSourceMap : isEnvDevelopment,
             root: paths.appSrc,
           },
         },
@@ -155,11 +159,29 @@ module.exports = function (webpackEnv) {
     return loaders;
   };
 
-  return {
-    mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
+
+  const mainPresetPlugins = [
+    [
+      require.resolve('babel-plugin-named-asset-import'),
+      {
+        loaderMap: {
+          svg: {
+            ReactComponent:
+              '@svgr/webpack?-svgo,+titleProp,+ref![path]',
+          },
+        },
+      },
+    ],
+    isEnvDevelopment &&
+      shouldUseReactRefresh &&
+      require.resolve('react-refresh/babel'),
+  ].filter(Boolean)
+
+  const config = {
+    mode: isProdOrServer ? 'production' : isEnvDevelopment && 'development',
     // Stop compilation early in production
-    bail: isEnvProduction,
-    devtool: isEnvProduction
+    bail: isProdOrServer,
+    devtool: isProdOrServer
       ? shouldUseSourceMap
         ? 'source-map'
         : false
@@ -193,26 +215,26 @@ module.exports = function (webpackEnv) {
         : paths.appIndexJs,
     output: {
       // The build folder.
-      path: isEnvProduction ? paths.appBuild : undefined,
+      path: isProdOrServer ? paths.appBuild : undefined,
       // Add /* filename */ comments to generated require()s in the output.
       pathinfo: isEnvDevelopment,
       // There will be one main bundle, and one file per asynchronous chunk.
       // In development, it does not produce real files.
       filename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].js'
-        : isEnvDevelopment && 'static/js/bundle.js',
+        : iDevOrServer && 'static/js/bundle.js',
       // TODO: remove this when upgrading to webpack 5
       futureEmitAssets: true,
       // There are also additional JS chunk files if you use code splitting.
       chunkFilename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].chunk.js'
-        : isEnvDevelopment && 'static/js/[name].chunk.js',
+        : iDevOrServer && 'static/js/[name].chunk.js',
       // webpack uses `publicPath` to determine where the app is being served from.
       // It requires a trailing slash, or the file assets will get an incorrect path.
       // We inferred the "public path" (such as / or /my-project) from homepage.
       publicPath: paths.publicUrlOrPath,
       // Point sourcemap entries to original disk location (format as URL on Windows)
-      devtoolModuleFilenameTemplate: isEnvProduction
+      devtoolModuleFilenameTemplate: isProdOrServer
         ? info =>
             path
               .relative(paths.appSrc, info.absoluteResourcePath)
@@ -405,22 +427,7 @@ module.exports = function (webpackEnv) {
                   ],
                 ],
                 
-                plugins: [
-                  [
-                    require.resolve('babel-plugin-named-asset-import'),
-                    {
-                      loaderMap: {
-                        svg: {
-                          ReactComponent:
-                            '@svgr/webpack?-svgo,+titleProp,+ref![path]',
-                        },
-                      },
-                    },
-                  ],
-                  isEnvDevelopment &&
-                    shouldUseReactRefresh &&
-                    require.resolve('react-refresh/babel'),
-                ].filter(Boolean),
+                plugins:mainPresetPlugins ,
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
                 // It enables caching results in ./node_modules/.cache/babel-loader/
                 // directory for faster rebuilds.
@@ -469,7 +476,7 @@ module.exports = function (webpackEnv) {
               exclude: cssModuleRegex,
               use: getStyleLoaders({
                 importLoaders: 1,
-                sourceMap: isEnvProduction
+                sourceMap: isProdOrServer
                   ? shouldUseSourceMap
                   : isEnvDevelopment,
               }),
@@ -485,7 +492,7 @@ module.exports = function (webpackEnv) {
               test: cssModuleRegex,
               use: getStyleLoaders({
                 importLoaders: 1,
-                sourceMap: isEnvProduction
+                sourceMap: isProdOrServer
                   ? shouldUseSourceMap
                   : isEnvDevelopment,
                 modules: {
@@ -502,7 +509,7 @@ module.exports = function (webpackEnv) {
               use: getStyleLoaders(
                 {
                   importLoaders: 3,
-                  sourceMap: isEnvProduction
+                  sourceMap: isProdOrServer
                     ? shouldUseSourceMap
                     : isEnvDevelopment,
                 },
@@ -521,7 +528,7 @@ module.exports = function (webpackEnv) {
               use: getStyleLoaders(
                 {
                   importLoaders: 3,
-                  sourceMap: isEnvProduction
+                  sourceMap: isProdOrServer
                     ? shouldUseSourceMap
                     : isEnvDevelopment,
                   modules: {
@@ -707,7 +714,7 @@ module.exports = function (webpackEnv) {
           ],
           silent: true,
           // The formatter is invoked directly in WebpackDevServerUtils during development
-          formatter: isEnvProduction ? typescriptFormatter : undefined,
+          formatter: isProdOrServer ? typescriptFormatter : undefined,
         }),
       new ESLintPlugin({
         // Plugin options
@@ -745,4 +752,6 @@ module.exports = function (webpackEnv) {
     // our own hints via the FileSizeReporter
     performance: false,
   };
+
+  return config
 };
