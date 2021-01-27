@@ -177,7 +177,7 @@ module.exports = function (webpackEnv) {
       require.resolve('react-refresh/babel'),
   ].filter(Boolean)
 
-  const config = {
+  const config =  Object.assign({
     mode: isEnvProduction ? 'production' : isEnvDevelopment ? 'development' : isEnvServer && 'none',
     // Stop compilation early in production
     bail: isProdOrServer,
@@ -215,7 +215,7 @@ module.exports = function (webpackEnv) {
         : isEnvServer
           ? paths.appServerIndexJs 
           :paths.appIndexJs,
-    output: {
+    output:Object.assign({
       // The build folder.
       path: isProdOrServer ? paths.appBuild : undefined,
       // Add /* filename */ comments to generated require()s in the output.
@@ -249,7 +249,8 @@ module.exports = function (webpackEnv) {
       // this defaults to 'window', but by setting it to 'this' then
       // module chunks which are built will work in web workers as well.
       globalObject: 'this',
-    },
+    }, isEnvServer ? {"libraryTarget": "commonjs2"} : {}
+    ),
     optimization: {
       minimize:  isEnvProduction,
       minimizer: [
@@ -753,7 +754,7 @@ module.exports = function (webpackEnv) {
     // Turn off performance processing because we utilize
     // our own hints via the FileSizeReporter
     performance: false,
-  };
+  }, isEnvServer ? {target:'node'} : {});
 
   return config
 };
