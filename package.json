@@ -77,8 +77,10 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
+    "builds": "node scripts/buildserver.js",
     "test": "node scripts/test.js",
-    "d": "node --inspect-brk scripts/build.js"
+    "d": "node --inspect-brk scripts/build.js",
+    "ds": "node --inspect-brk scripts/buildserver.js"
   },
   "eslintConfig": {
     "extends": [
@@ -96,7 +98,11 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ],
+    "server": [
+      "last 1 chrome version"
     ]
+
   },
   "jest": {
     "roots": [
