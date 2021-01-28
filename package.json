@@ -103,7 +103,6 @@
     "server": [
       "last 1 chrome version"
     ]
-
   },
   "jest": {
     "roots": [
@@ -161,5 +160,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "patch-package": "^6.2.2"
   }
 }
