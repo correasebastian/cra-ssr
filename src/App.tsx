@@ -22,15 +22,7 @@ function App(props:{location?:string}) {
   function routes(){
     return (
       <>
-      <Route path="/" exact><Home /></Route>
-      <Route path="/category"><Category /></Route>
-      <Route path="/products"><Products /></Route>
-      </>
-    )
-  }
-  return (
-   <BrowserRouter>
-    <nav className="navbar navbar-light">
+      <nav className="navbar navbar-light">
         <ul className="nav navbar-nav">
           <li>
             <Link to="/">Home</Link>
@@ -43,6 +35,14 @@ function App(props:{location?:string}) {
           </li>
         </ul>
       </nav>
+      <Route path="/" exact><Home /></Route>
+      <Route path="/category"><Category /></Route>
+      <Route path="/products"><Products /></Route>
+      </>
+    )
+  }
+  return (
+   <BrowserRouter>
      {routes()}
    </BrowserRouter>
   );
