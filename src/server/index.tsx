@@ -3,9 +3,13 @@ import  {renderToString} from 'react-dom/server'
 import  App from '../App' ;
 
 
-const renderK = (location?: string) =>{
+
+const renderK = (extractor: any, location?: string) =>{
+   
     console.info('renderK  kykelyn')
-    const reactDom = renderToString(<App location={location}/>);
+    const jsx = extractor.collectChunks(<App location={location}/>)
+
+    const reactDom = renderToString(jsx)
 
     console.info(reactDom)
 }

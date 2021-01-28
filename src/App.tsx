@@ -2,12 +2,14 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter, StaticRouter, Route, Link } from "react-router-dom";
 import Home from "./Home"
-
-
+// eslint-disable-next-line import/no-extraneous-dependencies
+import loadable from '@loadable/component'
+const A = loadable(() => ((import('./components/A') as any)))
 
 const Category = () => (
   <div>
     <h2>Category</h2>
+    <A/>
   </div>
 );
 
