@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, StaticRouter, Route, Link } from "react-router-dom";
 import Home from "./Home"
 
 
@@ -18,6 +18,8 @@ const Products = () => (
 );
 
 function App(props:{location?:string}) {
+
+  console.info('location', props.location)
 
   function routes(){
     return (
@@ -41,11 +43,17 @@ function App(props:{location?:string}) {
       </>
     )
   }
-  return (
-   <BrowserRouter>
-     {routes()}
-   </BrowserRouter>
-  );
+  return props?.location ?(
+    
+      <StaticRouter location={props.location} context={{}}>
+        {routes()}
+      </StaticRouter>
+      ):
+        (<BrowserRouter>
+        {routes()}
+      </BrowserRouter>
+      )
+   ;
 }
 
 export default App;

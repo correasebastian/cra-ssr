@@ -3,9 +3,9 @@ import  {renderToString} from 'react-dom/server'
 import  App from '../App' ;
 
 
-const renderK = () =>{
+const renderK = (location?: string) =>{
     console.info('renderK  kykelyn')
-    const reactDom = renderToString(<App/>);
+    const reactDom = renderToString(<App location={location}/>);
 
     console.info(reactDom)
 }
