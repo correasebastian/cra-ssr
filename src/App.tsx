@@ -1,27 +1,50 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Sebas from 'component-sebas'
+import { BrowserRouter, Route, Link } from "react-router-dom";
+import Home from "./Home"
 
-function App() {
+
+
+const Category = () => (
+  <div>
+    <h2>Category</h2>
+  </div>
+);
+
+const Products = () => (
+  <div>
+    <h2>Products</h2>
+  </div>
+);
+
+function App(props:{location?:string}) {
+
+  function routes(){
+    return (
+      <>
+      <Route path="/" exact><Home /></Route>
+      <Route path="/category"><Category /></Route>
+      <Route path="/products"><Products /></Route>
+      </>
+    )
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <Sebas />
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <BrowserRouter>
+    <nav className="navbar navbar-light">
+        <ul className="nav navbar-nav">
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/category">Category</Link>
+          </li>
+          <li>
+            <Link to="/products">Products</Link>
+          </li>
+        </ul>
+      </nav>
+     {routes()}
+   </BrowserRouter>
   );
 }
 
