@@ -81,7 +81,8 @@
     "test": "node scripts/test.js",
     "d": "node --inspect-brk scripts/build.js",
     "ds": "node --inspect-brk scripts/buildserver.js",
-    "dr": "node config/run.js"
+    "dr": "node config/run.js",
+    "postinstall": "patch-package"
   },
   "eslintConfig": {
     "extends": [
