@@ -4,11 +4,16 @@ import { BrowserRouter, StaticRouter, Route, Link } from "react-router-dom";
 import Home from "./Home"
 // eslint-disable-next-line import/no-extraneous-dependencies
 import loadable from '@loadable/component'
+debugger;
+console.log("🚀 -------------------------------------")
+  console.log("🚀 APP.tsx")
+  console.log("🚀 -------------------------------------")
+
 const A = loadable(() =>{
   console.log("🚀 -------------------------------------")
   console.log("🚀 ~ file: triggering lodable")
   console.log("🚀 -------------------------------------")
-  return (import('./components/A') as any).then((x:any)=>{
+  return (import('./A') as any).then((x:any)=>{
     console.log("🚀 -------------------------------------")
     console.log("🚀 ~ file: lodable promise resolve", x)
     console.log("🚀 -------------------------------------")
