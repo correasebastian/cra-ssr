@@ -1,2 +1,4 @@
-require('../build/static/js/bundle')
-require('../build/static/js/main.chunk')
+
+const a = require('../build/static/js/bundle')
+console.log(a.default())
+debugger;

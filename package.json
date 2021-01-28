@@ -80,7 +80,8 @@
     "builds": "node scripts/buildserver.js",
     "test": "node scripts/test.js",
     "d": "node --inspect-brk scripts/build.js",
-    "ds": "node --inspect-brk scripts/buildserver.js"
+    "ds": "node --inspect-brk scripts/buildserver.js",
+    "dr": "node config/run.js"
   },
   "eslintConfig": {
     "extends": [
