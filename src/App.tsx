@@ -9,11 +9,11 @@ console.log("🚀 -------------------------------------")
   console.log("🚀 APP.tsx")
   console.log("🚀 -------------------------------------")
 
-const A = loadable(() =>{
+const Liam = loadable(() =>{
   console.log("🚀 -------------------------------------")
   console.log("🚀 ~ file: triggering lodable")
   console.log("🚀 -------------------------------------")
-  return (import('./A') as any).then((x:any)=>{
+  return (import('./Liam') as any).then((x:any)=>{
     console.log("🚀 -------------------------------------")
     console.log("🚀 ~ file: lodable promise resolve", x)
     console.log("🚀 -------------------------------------")
@@ -26,7 +26,7 @@ const Category = () => (
   <div>
     <h2>Category</h2>
     <h1>under Category</h1>
-    <A/>
+    <Liam/>
   </div>
 );
 
