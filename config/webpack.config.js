@@ -26,6 +26,7 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const LoadablePlugin = require('@loadable/webpack-plugin')
 
 const postcssNormalize = require('postcss-normalize');
 
@@ -181,11 +182,7 @@ module.exports = function (webpackEnv) {
     mode: isEnvProduction ? 'production' : isEnvDevelopment ? 'development' : isEnvServer && 'none',
     // Stop compilation early in production
     bail: isProdOrServer,
-    devtool: isProdOrServer
-      ? shouldUseSourceMap
-        ? 'source-map'
-        : false
-      : isEnvDevelopment && 'cheap-module-source-map',
+    devtool: "none",
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
     entry:
@@ -738,6 +735,7 @@ module.exports = function (webpackEnv) {
           },
         },
       }),
+      isEnvServer && new LoadablePlugin()
     ].filter(Boolean),
     // Some libraries import Node modules but don't use them in the browser.
     // Tell webpack to provide empty mocks for them so importing them works.

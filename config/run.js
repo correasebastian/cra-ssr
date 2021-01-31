@@ -1,4 +1,11 @@
+const lServer = require("@loadable/server")
+const moduleWithfault = require('../build/static/js/bundle')
+const path = require("path")
+const statsFile = path.resolve('build/loadable-stats.json')
+// We create an extractor from the statsFile
+const extractor = new lServer.ChunkExtractor({ statsFile })
 
-const a = require('../build/static/js/bundle')
-console.log(a.default('/category'))
+moduleWithfault.default(extractor,'/category' )
+
+
 debugger;
