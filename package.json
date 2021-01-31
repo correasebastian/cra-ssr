@@ -81,6 +81,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "builds": "node scripts/buildserver.js",
+    "postbuilds": "copyfiles -f build/static/js/*.chunk.js build/static/js/static/js",
     "test": "node scripts/test.js",
     "d": "node --inspect-brk scripts/build.js",
     "ds": "node --inspect-brk scripts/buildserver.js",
@@ -172,6 +173,7 @@
     "@types/loadable__component": "^5.13.1",
     "@types/loadable__server": "^5.12.3",
     "@types/react-router-dom": "^5.1.7",
+    "copyfiles": "^2.4.1",
     "patch-package": "^6.2.2"
   }
 }
