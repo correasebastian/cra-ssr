@@ -7,11 +7,11 @@ import  App from '../App' ;
 const renderK = (extractor: any, location?: string) =>{
    
     console.info('renderK  kykelyn')
-    const jsx = extractor.collectChunks(<App location={location}/>)
+    // const jsx = extractor.collectChunks(<App extractor={extractor} location={location}/>)
 
-    console.log(jsx)
+    // console.log(jsx)
 
-    const reactDom = renderToString(jsx)
+    const reactDom = renderToString(<App extractor={extractor} location={location}/>)
     console.log("🚀 ------------------------------------------------------------")
     console.log("🚀 ~ file: index.tsx ~ line 15 ~ renderK ~ reactDom", reactDom)
     console.log("🚀 ------------------------------------------------------------")
