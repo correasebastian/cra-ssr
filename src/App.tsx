@@ -6,22 +6,8 @@ import { ChunkExtractorManager } from '@loadable/server'
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import loadable from '@loadable/component'
-debugger;
-console.log("🚀 -------------------------------------")
-  console.log("🚀 APP.tsx")
-  console.log("🚀 -------------------------------------")
-
 const A = loadable(() =>{
-  console.log("🚀 -------------------------------------")
-  console.log("🚀 ~ file: triggering lodable")
-  console.log("🚀 -------------------------------------")
-  return (import('./A') as any).then((x:any)=>{
-    console.log("🚀 -------------------------------------")
-    console.log("🚀 ~ file: lodable promise resolve", x)
-    console.log("🚀 -------------------------------------")
-      
-      return x
-    })
+  return (import('./A') as any)
 } ,{ssr:true})
 
 const Category = () => (
@@ -40,9 +26,6 @@ const Products = () => (
 
 function App(props:{location?:string, extractor?:any}, ) {
 
-  console.info('location', props.location)
-  console.info('extractor', props.extractor)
-  
   function routes(){
     return (
       <>
