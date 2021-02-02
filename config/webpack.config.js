@@ -225,13 +225,13 @@ module.exports = function (webpackEnv) {
       // In development, it does not produce real files.
       filename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].js'
-        : iDevOrServer && 'static/js/bundle.js',
+        : isEnvDevelopment ?'static/js/bundle.js' : isEnvServer && 'bundle.js',
       // TODO: remove this when upgrading to webpack 5
       futureEmitAssets: true,
       // There are also additional JS chunk files if you use code splitting.
       chunkFilename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].chunk.js'
-        : iDevOrServer && 'static/js/[name].chunk.js',
+        : isEnvDevelopment ? 'static/js/[name].chunk.js' : isEnvServer && '[name].chunk.js',
       // webpack uses `publicPath` to determine where the app is being served from.
       // It requires a trailing slash, or the file assets will get an incorrect path.
       // We inferred the "public path" (such as / or /my-project) from homepage.
@@ -398,7 +398,7 @@ module.exports = function (webpackEnv) {
               options: {
                 limit: imageInlineSizeLimit,
                 mimetype: 'image/avif',
-                name: 'static/media/[name].[hash:8].[ext]',
+                name: isEnvServer ? '[name].[hash:8].[ext]': 'static/media/[name].[hash:8].[ext]',
               },
             },
             // "url" loader works like "file" loader except that it embeds assets
