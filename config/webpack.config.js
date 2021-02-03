@@ -218,7 +218,7 @@ module.exports = function (webpackEnv) {
           :paths.appIndexJs,
     output:Object.assign({
       // The build folder.
-      path: isProdOrServer ? paths.appBuild : undefined,
+      path: isEnvProduction ? paths.appBuild : isEnvServer ?  paths.appServerBuild : undefined,
       // Add /* filename */ comments to generated require()s in the output.
       pathinfo: isEnvDevelopment,
       // There will be one main bundle, and one file per asynchronous chunk.
