@@ -14,8 +14,24 @@ const A = loadable(() =>{
 
 const Category = () => (
   <div>
-    <Helmet>
+    <Helmet htmlAttributes={{
+      lang:"es-US"
+    }} bodyAttributes={{
+          "data-brand": "testing-brand"
+        }}>
         <title>Category title</title>
+        <meta name="description" content="Tutorial for React Helmet" />
+        <meta name="theme-color" content="#E6E6FA" />
+        <style type="text/css">{`
+          #spa-root .aem-page .aem-Grid .aem-GridColumn:last-child,
+          #spa-root .page .aem-Grid .aem-GridColumn:last-child { 
+            background: #fff;
+          }
+        `}</style>
+        <script
+          type="text/javascript"
+          src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyCM7aLvvsSJHxRho2UNyQ-_0owM_PbVz9s&libraries=places`}
+        ></script>
     </Helmet>
     <h2>Category</h2>
     <h1>under Category</h1>

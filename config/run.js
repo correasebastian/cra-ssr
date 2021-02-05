@@ -21,6 +21,7 @@ const app = express();
 const filePath = path.resolve(__dirname, '..', 'build','client', 'index.html');
 const mainStatic = path.resolve(__dirname, '../build/client')
 
+const endHeadNode = '</head>'
 const all = (req, res)=>{
     fs.readFile(filePath, 'utf8', (err, htmlData) => {        
         if (err) {
@@ -48,6 +49,18 @@ const all = (req, res)=>{
 
         return res.end(
           htmlData
+          .replace(
+            '<html',
+            '<html '+ helmet.htmlAttributes.toString()
+          )
+          .replace(
+            '<body',
+            '<body '+ helmet.bodyAttributes.toString()
+          )
+          .replace(
+            endHeadNode,
+            `${helmet.meta.toString()} ${helmet.link.toString()} ${helmet.style.toString()} ${helmet.script.toString()}` + endHeadNode
+          )
           .replace(
             '<div id="root"></div>',
             `<div id="root">${reactDom}</div>`

@@ -4,7 +4,6 @@ import  App from '../App' ;
 import Helmet from 'react-helmet'
 
 
-
 const renderK = (extractor: any, location?: string) =>{
    
     const reactDom = renderToString(<App extractor={extractor} location={location}/>)
@@ -22,6 +21,5 @@ const renderK = (extractor: any, location?: string) =>{
 
     return [reactDom, helmet]
 }
-
 
 export default renderK
