@@ -5,6 +5,7 @@ const statsFile = path.resolve('build/server/loadable-stats.json')
 // We create an extractor from the statsFile
 const extractor = new lServer.ChunkExtractor({ statsFile })
 const fs = require('fs');
+const {Helmet} = require('react-helmet')
 
 
 const express = require('express');
@@ -34,7 +35,10 @@ const all = (req, res)=>{
           res.writeHead(200, { 'Content-Type': 'text/html' })
           console.log(`SSR of ${req.path}`);
 
-        const reactDom = moduleWithfault.default(extractor,location )
+        const [reactDom, helmet] = moduleWithfault.default(extractor,location )
+        // const helmet = Helmet.renderStatic();
+        console.info('title', helmet.title.toString())
+
         return res.end(
           htmlData.replace(
             '<div id="root"></div>',
