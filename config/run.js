@@ -35,13 +35,8 @@ const all = (req, res)=>{
           console.log(`SSR of ${req.path}`);
 
         const [reactDom, helmet] = moduleWithfault.default(extractor,location )
-        // const helmet = Helmet.renderStatic();
         const helmetTitle= helmet.title.toString()
-        console.info('title', helmetTitle)
-        
         const hasHelmetTitle = helmetTitle ? helmetTitle.match(helmetExtractorRegex): null 
-        console.info('hasHelmetTitle', hasHelmetTitle)
-
          
         if(hasHelmetTitle){
           htmlData= htmlData
