@@ -3,6 +3,8 @@ import './App.css';
 import { BrowserRouter, StaticRouter, Route, Link } from "react-router-dom";
 import Home from "./Home"
 import { ChunkExtractorManager } from '@loadable/server'
+import {Helmet} from "react-helmet";
+
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import loadable from '@loadable/component'
@@ -12,6 +14,9 @@ const A = loadable(() =>{
 
 const Category = () => (
   <div>
+    <Helmet>
+        <title>Category title</title>
+    </Helmet>
     <h2>Category</h2>
     <h1>under Category</h1>
     <A/>
@@ -20,6 +25,9 @@ const Category = () => (
 
 const Products = () => (
   <div>
+    <Helmet>
+        <title>Products title</title>
+    </Helmet>
     <h2>Products</h2>
   </div>
 );

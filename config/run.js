@@ -6,10 +6,10 @@ const statsFile = path.resolve('build/server/loadable-stats.json')
 const extractor = new lServer.ChunkExtractor({ statsFile })
 const fs = require('fs');
 
-
 const express = require('express');
 
 const PORT = 3000;
+const helmetExtractorRegex = /<title data-react-helmet="true">(.+)<\/title>/
 
 // const routes = ['/', '/page'];
 
@@ -34,9 +34,21 @@ const all = (req, res)=>{
           res.writeHead(200, { 'Content-Type': 'text/html' })
           console.log(`SSR of ${req.path}`);
 
-        const reactDom = moduleWithfault.default(extractor,location )
+        const [reactDom, helmet] = moduleWithfault.default(extractor,location )
+        const helmetTitle= helmet.title.toString()
+        const hasHelmetTitle = helmetTitle ? helmetTitle.match(helmetExtractorRegex): null 
+         
+        if(hasHelmetTitle){
+          htmlData= htmlData
+          .replace(
+            /\s*<title>(.+)<\/title>\s*/,
+            helmetTitle
+          )
+        }
+
         return res.end(
-          htmlData.replace(
+          htmlData
+          .replace(
             '<div id="root"></div>',
             `<div id="root">${reactDom}</div>`
           )
