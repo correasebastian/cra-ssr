@@ -2,6 +2,7 @@ import  React from 'react'
 import  {renderToString} from 'react-dom/server'
 import  App from '../App' ;
 import Helmet from 'react-helmet'
+Helmet.canUseDOM = false
 
 
 const renderK = (extractor: any, location?: string) =>{
