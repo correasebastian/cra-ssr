@@ -1,5 +1,5 @@
 
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useState, useMemo} from 'react';
 import logo from './logo.svg';
 import Sebas from 'component-sebas'
 import {Helmet} from "react-helmet";
@@ -71,7 +71,7 @@ const Home =() =>{
     //     setNumber3(number2 + 1)
     // }, [number2])
 
-    const number3 = number2 ? number2 +1 : 0
+    const number3 = useMemo(() =>number2 ? number2 +1 : 0 , [number2] )
 
     return (
     <div className="App">
