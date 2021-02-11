@@ -66,6 +66,7 @@ const Home =() =>{
 
 
     useEffect(()=>{
+        if(!number2) return
         console.count('third effect:')
         setNumber3(number2 + 1)
     }, [number2])
@@ -79,7 +80,7 @@ const Home =() =>{
         </Helmet>
         <h1>first Number :  {number}</h1>
         <h2>Second NUmber : {number2}</h2>
-        <h3> third Number :  {number}</h3>
+        <h3> third Number :  {number3}</h3>
         <button onClick={()=>setToggle(c=> !c)}>{toggle ? 'on' : 'off'}</button>
         <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
