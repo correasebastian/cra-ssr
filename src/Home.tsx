@@ -35,7 +35,7 @@ const Home =() =>{
 
     const [number , setNumber]= useState(1)
     const [number2 , setNumber2]= useState(0)
-    const [number3 , setNumber3]= useState(0)
+    // const [number3 , setNumber3]= useState(0)
     const [toggle , setToggle]= useState(false)
     
     console.count('renderinghome')
@@ -65,13 +65,13 @@ const Home =() =>{
     },)
 
 
-    useEffect(()=>{
-        if(!number2) return
-        console.count('third effect:')
-        setNumber3(number2 + 1)
-    }, [number2])
+    // useEffect(()=>{
+    //     if(!number2) return
+    //     console.count('third effect:')
+    //     setNumber3(number2 + 1)
+    // }, [number2])
 
-    // const number3 = 
+    const number3 = number2 ? number2 +1 : 0
 
     return (
     <div className="App">
