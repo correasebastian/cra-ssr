@@ -3,6 +3,10 @@
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'server';
 process.env.NODE_ENV = 'server';
+const isWatchMode = process.env.WATCHSERVER==="TRUE"
+
+console.log(process.env.WATCHSERVER)
+console.log('isWatchMode', isWatchMode)
 
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
@@ -138,7 +142,7 @@ function build(previousFileSizes) {
 
   const compiler = webpack(config);
   return new Promise((resolve, reject) => {
-    compiler.run((err, stats) => {
+    const callback = (err, stats) => {
       let messages;
       if (err) {
         if (!err.message) {
@@ -200,7 +204,13 @@ function build(previousFileSizes) {
       }
 
       return resolve(resolveArgs);
-    });
+    }
+
+    if(isWatchMode){
+      compiler.watch({aggregateTimeout:300}, callback)
+    }else{
+      compiler.run(callback);
+    }
   });
 }
 
