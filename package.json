@@ -83,6 +83,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "builds": "node scripts/buildserver.js",
+    "buildsw": "node scripts/buildserverwatch.js",
     "b": "npm run build && npm run builds && npm run dr",
     "test": "node scripts/test.js",
     "d": "node --inspect-brk scripts/build.js",
@@ -177,6 +178,7 @@
     "@types/react-helmet": "^6.1.0",
     "@types/react-router-dom": "^5.1.7",
     "copyfiles": "^2.4.1",
+    "env-cmd": "^10.1.0",
     "patch-package": "^6.2.2"
   }
 }
