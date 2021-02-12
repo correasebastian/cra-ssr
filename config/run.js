@@ -6,10 +6,10 @@ const statsFile = path.resolve('build/server/loadable-stats.json')
 const extractor = new lServer.ChunkExtractor({ statsFile })
 const fs = require('fs');
 
-
 const express = require('express');
 
 const PORT = 3000;
+const helmetExtractorRegex = /<title data-react-helmet="true">(.+)<\/title>/
 
 // const routes = ['/', '/page'];
 
@@ -21,6 +21,7 @@ const app = express();
 const filePath = path.resolve(__dirname, '..', 'build','client', 'index.html');
 const mainStatic = path.resolve(__dirname, '../build/client')
 
+const endHeadNode = '</head>'
 const all = (req, res)=>{
     fs.readFile(filePath, 'utf8', (err, htmlData) => {        
         if (err) {
@@ -34,9 +35,33 @@ const all = (req, res)=>{
           res.writeHead(200, { 'Content-Type': 'text/html' })
           console.log(`SSR of ${req.path}`);
 
-        const reactDom = moduleWithfault.default(extractor,location )
+        const [reactDom, helmet] = moduleWithfault.default(extractor,location )
+        const helmetTitle= helmet.title.toString()
+        const hasHelmetTitle = helmetTitle ? helmetTitle.match(helmetExtractorRegex): null 
+         
+        if(hasHelmetTitle){
+          htmlData= htmlData
+          .replace(
+            /\s*<title>(.+)<\/title>\s*/,
+            helmetTitle
+          )
+        }
+
         return res.end(
-          htmlData.replace(
+          htmlData
+          .replace(
+            '<html',
+            '<html '+ helmet.htmlAttributes.toString()
+          )
+          .replace(
+            '<body',
+            '<body '+ helmet.bodyAttributes.toString()
+          )
+          .replace(
+            endHeadNode,
+            `${helmet.meta.toString()} ${helmet.link.toString()} ${helmet.style.toString()} ${helmet.script.toString()}` + endHeadNode
+          )
+          .replace(
             '<div id="root"></div>',
             `<div id="root">${reactDom}</div>`
           )
