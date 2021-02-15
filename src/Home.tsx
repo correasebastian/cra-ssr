@@ -1,5 +1,5 @@
 
-import React,{useEffect, useState, useMemo} from 'react';
+import React,{useEffect, useState, useMemo, useCallback} from 'react';
 import logo from './logo.svg';
 import Sebas from 'component-sebas'
 import {Helmet} from "react-helmet";
@@ -37,6 +37,9 @@ const Home =() =>{
     const [number2 , setNumber2]= useState(0)
     // const [number3 , setNumber3]= useState(0)
     const [toggle , setToggle]= useState(false)
+
+    const myFn = useCallback(() => {},[])
+    
     
     console.count('renderinghome')
 
@@ -72,6 +75,10 @@ const Home =() =>{
     // }, [number2])
 
     const number3 = useMemo(() =>number2 ? number2 +1 : 0 , [number2] )
+
+    useEffect(()=>{
+        console.count('myFn')
+    },[myFn])
 
     return (
     <div className="App">
