@@ -6,6 +6,8 @@ Helmet.canUseDOM = false
 
 
 const renderK = (extractor: any, location?: string) =>{
+
+    console.log('kykelyn 45456')
    
     const reactDom = renderToString(<App extractor={extractor} location={location}/>)
     const helmet = Helmet.renderStatic();

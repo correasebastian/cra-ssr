@@ -35,6 +35,7 @@ const Category = () => (
     </Helmet>
     <h2>Category</h2>
     <h1>under Category</h1>
+    <h1>kykelyn</h1>
     <A/>
   </div>
 );

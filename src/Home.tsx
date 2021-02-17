@@ -25,7 +25,6 @@ function simulateSync(time:number){
 function simulateP(time:number){
     return new Promise<number>((resolve, reject) => {
             setTimeout(()=> {
-               
                 resolve(1)},
                  time*1000)
     })
@@ -38,7 +37,11 @@ const Home =() =>{
     // const [number3 , setNumber3]= useState(0)
     const [toggle , setToggle]= useState(false)
 
-    const myFn = useCallback(() => {},[])
+    const myFn = useCallback((n) => {
+        console.info('from usecallabck im -->', n)
+    }, [])
+    // const myFn = useMemo(() => ()=>{}, [])
+    // const myFn = () => {}
     
     
     console.count('renderinghome')
@@ -80,6 +83,9 @@ const Home =() =>{
         console.count('myFn')
     },[myFn])
 
+
+    myFn(number3)
+
     return (
     <div className="App">
         <Helmet>
@@ -87,7 +93,7 @@ const Home =() =>{
         </Helmet>
         <h1>first Number :  {number}</h1>
         <h2>Second NUmber : {number2}</h2>
-        <h3> third Number :  {number3}</h3>
+        <h3>third Number :  {number3}</h3>
         <button onClick={()=>setToggle(c=> !c)}>{toggle ? 'on' : 'off'}</button>
         <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
