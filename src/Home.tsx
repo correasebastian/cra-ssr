@@ -17,6 +17,7 @@ const useStyles = makeStyles({
       color: 'white',
       height: 48,
       padding: '0 30px',
+      width:'200px'
     },
   });
 

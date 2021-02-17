@@ -35,7 +35,11 @@ const all = (req, res)=>{
           res.writeHead(200, { 'Content-Type': 'text/html' })
           console.log(`SSR of ${req.path}`);
 
-        const [reactDom, helmet] = moduleWithfault.default(extractor,location )
+        const [reactDom, helmet,sheets ] = moduleWithfault.default(extractor,location )
+
+        const css = sheets.toString();
+        const styleTag = `<style id="jss-server-side">${css}</style>`
+
         const helmetTitle= helmet.title.toString()
         const hasHelmetTitle = helmetTitle ? helmetTitle.match(helmetExtractorRegex): null 
          
@@ -59,7 +63,7 @@ const all = (req, res)=>{
           )
           .replace(
             endHeadNode,
-            `${helmet.meta.toString()} ${helmet.link.toString()} ${helmet.style.toString()} ${helmet.script.toString()}` + endHeadNode
+            `${helmet.meta.toString()} ${helmet.link.toString()} ${helmet.style.toString()} ${helmet.script.toString()} ${styleTag}` + endHeadNode
           )
           .replace(
             '<div id="root"></div>',
