@@ -19,10 +19,11 @@ const useStyles = makeStyles({
       padding: '0 30px',
       width:'200px'
     },
+    imageWrapper: props => props
   });
 
 const Home =() =>{
-    const classes = useStyles();
+    const classes = useStyles({backgroundColor:"red"});
 
     return (
     <div className="App">
@@ -30,7 +31,7 @@ const Home =() =>{
             <title>Home title</title>
         </Helmet>
         <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className={"App-logo" + classes.imageWrapper } alt="logo" />
         <p>
             Edit <code>src/App.tsx</code> and save to reload.
         </p>

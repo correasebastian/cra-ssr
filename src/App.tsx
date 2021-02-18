@@ -39,12 +39,17 @@ const Category = () => (
   </div>
 );
 
+function createMarkup() {
+  return {__html: '<h3>First &middot; Second</h3>'};
+}
 const Products = () => (
   <div>
     <Helmet>
         <title>Products title</title>
     </Helmet>
+
     <h2>Products</h2>
+    <div dangerouslySetInnerHTML={createMarkup()}></div>
   </div>
 );
 
