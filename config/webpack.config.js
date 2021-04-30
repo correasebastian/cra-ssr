@@ -84,6 +84,8 @@ module.exports = function (webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development';
   const isEnvProduction = webpackEnv === 'production' ;
   const isEnvServer = webpackEnv === 'server';
+  const isServerDEV =process.env.SERVER_DEV === "true" 
+  console.info(isServerDEV)
 
   const isProdOrServer = isEnvProduction || isEnvServer
   const iDevOrServer = isEnvDevelopment || isEnvServer
@@ -182,7 +184,7 @@ module.exports = function (webpackEnv) {
   ].filter(Boolean)
 
   const config =  Object.assign({
-    mode: isEnvProduction ? 'production' : isEnvDevelopment ? 'development' : isEnvServer && 'none',
+    mode: isEnvProduction ? 'production' : (isEnvDevelopment || isServerDEV) ? 'development' : isEnvServer && 'none',
     // Stop compilation early in production
     bail: isProdOrServer,
     devtool: isProdOrServer
@@ -193,7 +195,7 @@ module.exports = function (webpackEnv) {
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
     entry:
-      isEnvDevelopment && !shouldUseReactRefresh
+      (isEnvDevelopment ) && !shouldUseReactRefresh
         ? [
             // Include an alternative client for WebpackDevServer. A client's job is to
             // connect to WebpackDevServer by a socket and get notified about changes.
@@ -636,10 +638,10 @@ module.exports = function (webpackEnv) {
       // Otherwise React will be compiled in the very slow development mode.
       new webpack.DefinePlugin(env.stringified),
       // This is necessary to emit hot updates (CSS and Fast Refresh):
-      isEnvDevelopment && new webpack.HotModuleReplacementPlugin(),
+      (isEnvDevelopment ) && new webpack.HotModuleReplacementPlugin(),
       // Experimental hot reloading for React .
       // https://github.com/facebook/react/tree/master/packages/react-refresh
-      isEnvDevelopment &&
+      (isEnvDevelopment ) &&
         shouldUseReactRefresh &&
         new ReactRefreshWebpackPlugin({
           overlay: {
@@ -655,12 +657,12 @@ module.exports = function (webpackEnv) {
       // Watcher doesn't work well if you mistype casing in a path so we use
       // a plugin that prints an error when you attempt to do this.
       // See https://github.com/facebook/create-react-app/issues/240
-      isEnvDevelopment && new CaseSensitivePathsPlugin(),
+      (isEnvDevelopment || isServerDEV) && new CaseSensitivePathsPlugin(),
       // If you require a missing module and then `npm install` it, you still have
       // to restart the development server for webpack to discover it. This plugin
       // makes the discovery automatic so you don't have to restart.
       // See https://github.com/facebook/create-react-app/issues/186
-      isEnvDevelopment &&
+      (isEnvDevelopment || isServerDEV) &&
         new WatchMissingNodeModulesPlugin(paths.appNodeModules),
       isEnvProduction &&
         new MiniCssExtractPlugin({

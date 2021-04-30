@@ -83,7 +83,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "startServer": "PORT=3001 node scripts/startServer.js",
+    "startServer": "PORT=3001 SERVER_DEV=true node scripts/startServer.js",
     "double": " npm run start & npm run startServer & wait",
     "build": "node scripts/build.js",
     "builds": "node scripts/buildserver.js",
