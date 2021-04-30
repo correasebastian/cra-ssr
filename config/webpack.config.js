@@ -27,6 +27,9 @@ const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpack
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const LoadablePlugin = require('@loadable/webpack-plugin')
+var HtmlWebpackSkipAssetsPlugin = require('html-webpack-skip-assets-plugin').HtmlWebpackSkipAssetsPlugin;
+const PreloadWebpackPlugin = require("preload-webpack-plugin");
+
 
 const postcssNormalize = require('postcss-normalize');
 
@@ -218,7 +221,7 @@ module.exports = function (webpackEnv) {
           :paths.appIndexJs,
     output:Object.assign({
       // The build folder.
-      path: isEnvProduction ? paths.appBuild : isEnvServer ?  paths.appServerBuild : undefined,
+      path:  isEnvServer ?  paths.appServerBuild : paths.appBuild,
       // Add /* filename */ comments to generated require()s in the output.
       pathinfo: isEnvDevelopment,
       // There will be one main bundle, and one file per asynchronous chunk.
@@ -575,7 +578,7 @@ module.exports = function (webpackEnv) {
           },
           isEnvProduction
             ? {
-                minify: {
+                minify: false /* {
                   removeComments: true,
                   collapseWhitespace: true,
                   removeRedundantAttributes: true,
@@ -586,11 +589,31 @@ module.exports = function (webpackEnv) {
                   minifyJS: true,
                   minifyCSS: true,
                   minifyURLs: true,
-                },
+                }, */
               }
             : undefined
         )
       ),
+
+      new HtmlWebpackPlugin(
+        Object.assign(
+          {},
+          {
+            inject: true,
+            template: paths.appHtml,
+            filename: "index-ssr.html",
+            minify:false,
+            excludeAssets: [/\.js$/i]
+          }
+        )
+      ),
+      new HtmlWebpackSkipAssetsPlugin(),
+
+      // new PreloadWebpackPlugin({
+      //   rel: "preload",
+      //   include: "initial"
+      // }),
+
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       // https://github.com/facebook/create-react-app/issues/5358

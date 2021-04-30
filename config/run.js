@@ -8,7 +8,7 @@ const fs = require('fs');
 
 const express = require('express');
 
-const PORT = 3000;
+const PORT = 3002;
 const helmetExtractorRegex = /<title data-react-helmet="true">(.+)<\/title>/
 
 // const routes = ['/', '/page'];
@@ -85,4 +85,3 @@ app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`));
 
 
 
-debugger;

@@ -1,0 +1,4 @@
+{
+    "watch": ["config/run.js", "build/"],
+    "ext": "js, css, html"
+  }

@@ -83,6 +83,8 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "startServer": "PORT=3001 node scripts/startServer.js",
+    "double": " npm run start & npm run startServer & wait",
     "build": "node scripts/build.js",
     "builds": "node scripts/buildserver.js",
     "buildse": "env-cmd -f ./server/.env.serverwatch node scripts/buildserver.js",
@@ -182,6 +184,8 @@
     "@types/react-router-dom": "^5.1.7",
     "copyfiles": "^2.4.1",
     "env-cmd": "^10.1.0",
-    "patch-package": "^6.2.2"
+    "html-webpack-skip-assets-plugin": "^1.0.1",
+    "patch-package": "^6.2.2",
+    "preload-webpack-plugin": "^2.3.0"
   }
 }
