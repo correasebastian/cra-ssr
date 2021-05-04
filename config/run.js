@@ -8,7 +8,7 @@ const fs = require('fs');
 
 const express = require('express');
 
-const PORT = 3002;
+const PORT = 3000;
 const helmetExtractorRegex = /<title data-react-helmet="true">(.+)<\/title>/
 
 // const routes = ['/', '/page'];
