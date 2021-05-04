@@ -1,0 +1,62 @@
+diff --git a/node_modules/react-dev-utils/WebpackDevServerUtils.js b/node_modules/react-dev-utils/WebpackDevServerUtils.js
+index 6a56f66..ae1c007 100644
+--- a/node_modules/react-dev-utils/WebpackDevServerUtils.js
++++ b/node_modules/react-dev-utils/WebpackDevServerUtils.js
+@@ -140,13 +140,15 @@ function createCompiler({
+   let tsMessagesResolver;
+ 
+   if (useTypeScript) {
+-    compiler.hooks.beforeCompile.tap('beforeCompile', () => {
+-      tsMessagesPromise = new Promise(resolve => {
+-        tsMessagesResolver = msgs => resolve(msgs);
++
++    compiler.compilers.forEach(compiler=>{
++      compiler.hooks.beforeCompile.tap('beforeCompile', () => {
++        tsMessagesPromise = new Promise(resolve => {
++          tsMessagesResolver = msgs => resolve(msgs);
++        });
+       });
+-    });
+ 
+-    forkTsCheckerWebpackPlugin
++      forkTsCheckerWebpackPlugin
+       .getCompilerHooks(compiler)
+       .receive.tap('afterTypeScriptCheck', (diagnostics, lints) => {
+         const allMsgs = [...diagnostics, ...lints];
+@@ -160,6 +162,8 @@ function createCompiler({
+             .map(format),
+         });
+       });
++
++    })
+   }
+ 
+   // "done" event fires when webpack has finished recompiling the bundle.
+@@ -168,6 +172,7 @@ function createCompiler({
+     if (isInteractive) {
+       clearConsole();
+     }
++    const multiStats= [...stats.stats || stats]
+ 
+     // We have switched off the default webpack output in WebpackDevServer
+     // options so we are going to "massage" the warnings and errors and present
+@@ -201,11 +206,17 @@ function createCompiler({
+       // Push errors and warnings into compilation result
+       // to show them after page refresh triggered by user.
+       if (tscCompileOnError) {
+-        stats.compilation.warnings.push(...messages.errors);
++        multiStats.forEach(stats =>  { 
++          stats.compilation.warnings.push(...messages.errors)
++        })
+       } else {
++        multiStats.forEach(stats =>  {
+         stats.compilation.errors.push(...messages.errors);
++        })
+       }
+-      stats.compilation.warnings.push(...messages.warnings);
++      multiStats.forEach(stats =>  {
++        stats.compilation.warnings.push(...messages.warnings);
++      })
+ 
+       if (messages.errors.length > 0) {
+         if (tscCompileOnError) {

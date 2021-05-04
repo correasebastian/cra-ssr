@@ -80,11 +80,11 @@ const hasJsxRuntime = (() => {
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
-module.exports = function (webpackEnv) {
+module.exports = function (webpackEnv, isServerDEV) {
   const isEnvDevelopment = webpackEnv === 'development';
   const isEnvProduction = webpackEnv === 'production' ;
   const isEnvServer = webpackEnv === 'server';
-  const isServerDEV =process.env.SERVER_DEV === "true" 
+  isServerDEV = typeof isServerDEV !=undefined ? isServerDEV : process.env.SERVER_DEV === "true"  
   console.info(isServerDEV)
 
   const isProdOrServer = isEnvProduction || isEnvServer
@@ -429,7 +429,11 @@ module.exports = function (webpackEnv) {
                 ),
                 presets: [
                   [
-                    require.resolve('babel-preset-react-app'),
+                     isEnvDevelopment 
+                     ? require.resolve('babel-preset-react-app')
+                     : isServerDEV 
+                      ?  require.resolve('babel-preset-react-app/server')
+                      : require.resolve('babel-preset-react-app'),
                     {
                       runtime: hasJsxRuntime ? 'automatic' : 'classic',
                     },
